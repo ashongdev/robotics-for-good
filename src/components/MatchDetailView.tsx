@@ -3,7 +3,6 @@ import { InteractionMatrix } from "./InteractionMatrix";
 import { MatchDetailHeader } from "./MatchDetailHeader";
 import { Effect, ParticleEffects } from "./ParticleEffects";
 import { ScoreboardDetail } from "./ScoreboardDetail";
-import { ScoringInfo } from "./ScoringInfo";
 import { ShareButton } from "./ShareButton";
 
 interface Match {
@@ -56,7 +55,6 @@ export function MatchDetailView({
 			className="w-full flex flex-col items-center max-w-2xl"
 		>
 			<MatchDetailHeader onBack={onBack} />
-			<ScoringInfo phase={currentPhase} />
 			<ScoreboardDetail match={match} />
 			<ShareButton
 				match={match}

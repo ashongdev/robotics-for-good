@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
+import { Info } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import { useMemo, useState } from "react";
 import { BracketList } from "./components/BracketList";
 import { CategoryToggle } from "./components/CategoryToggle";
+import { InfoModal } from "./components/InfoModal";
 import { MatchDetailView } from "./components/MatchDetailView";
 import { PhaseNavigation } from "./components/PhaseNavigation";
-import { ScoringInfo } from "./components/ScoringInfo";
 import { useEffects } from "./hooks/useEffects";
 import type { Match } from "./lib/matchService";
 import { transformSheetDataToMatches } from "./lib/matchService";
@@ -21,6 +22,7 @@ export default function App() {
 	const [category, setCategory] = useState<"junior" | "senior">("junior");
 	const [selectedMatch, setSelectedMatch] = useState<any>(null);
 	const [shared, setShared] = useState(false);
+	const [isInfoOpen, setIsInfoOpen] = useState(false);
 	const { effects, triggerEffect } = useEffects();
 
 	const PHASES = [
@@ -142,6 +144,21 @@ export default function App() {
 
 	return (
 		<div className="min-h-screen bg-editorial-bg text-editorial-ink font-sans selection:bg-editorial-gold selection:text-white border-[12px] md:border-[24px] border-editorial-ink flex flex-col items-center bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')] p-6 overflow-x-hidden relative">
+			{/* Info Button */}
+			<button
+				onClick={() => setIsInfoOpen(true)}
+				className="fixed top-6 right-6 z-30 bg-editorial-gold border-2 border-editorial-ink p-3 hover:bg-editorial-ink hover:text-editorial-gold transition-colors shadow-[4px_4px_0px_0px_rgba(26,26,26,1)]"
+				aria-label="Tournament information"
+			>
+				<Info size={24} className="font-bold" />
+			</button>
+
+			<InfoModal
+				isOpen={isInfoOpen}
+				onClose={() => setIsInfoOpen(false)}
+				phase={currentPhase}
+			/>
+
 			<AnimatePresence mode="wait">
 				{!selectedMatch ? (
 					<div className="w-full flex flex-col items-center">
@@ -149,7 +166,6 @@ export default function App() {
 							category={category}
 							onChange={setCategory}
 						/>
-						<ScoringInfo phase={currentPhase} />
 						{query.isLoading && (
 							<div className="text-center py-8">
 								<p className="text-sm text-slate-600">
