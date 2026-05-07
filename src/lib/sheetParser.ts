@@ -53,7 +53,6 @@ export function parseSheetMatch(row: string[]): ParsedMatch | null {
 
 export function parseSheetData(
 	data: SheetMatchData,
-	stage: string = "QF",
 	baseStation: string = "A",
 ): ParsedMatch[] {
 	return data.values

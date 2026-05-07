@@ -3,21 +3,20 @@ import { motion } from "motion/react";
 interface ByeCardProps {
 	team: string;
 	station: string;
-	stage: string;
 	onClick: () => void;
 }
 
-export function ByeCard({ team, station, stage, onClick }: ByeCardProps) {
+export function ByeCard({ team, station, onClick }: ByeCardProps) {
 	return (
 		<motion.div
 			whileHover={{ x: 4, y: 4 }}
 			whileTap={{ scale: 0.98 }}
 			onClick={onClick}
-			className="w-full max-w-sm border-2 border-editorial-ink bg-editorial-gold shadow-[8px_8px_0px_0px_rgba(26,26,26,1)] mb-8 overflow-hidden cursor-pointer active:shadow-none transition-shadow"
+			className="w-full border-2 border-editorial-ink bg-editorial-gold shadow-[8px_8px_0px_0px_rgba(26,26,26,1)] overflow-hidden cursor-pointer active:shadow-none transition-shadow h-full"
 		>
 			<div className="flex justify-between items-center px-4 py-2 border-b-2 border-editorial-ink bg-editorial-ink">
 				<span className="text-[10px] font-black uppercase tracking-[0.2em] text-white">
-					STAGE / {stage}
+					STAGE
 				</span>
 				<span className="font-mono text-[10px] font-bold py-0.5 px-2 border border-white text-white">
 					STATION {station}

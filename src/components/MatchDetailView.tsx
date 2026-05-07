@@ -3,6 +3,7 @@ import { InteractionMatrix } from "./InteractionMatrix";
 import { MatchDetailHeader } from "./MatchDetailHeader";
 import { Effect, ParticleEffects } from "./ParticleEffects";
 import { ScoreboardDetail } from "./ScoreboardDetail";
+import { ScoringInfo } from "./ScoringInfo";
 import { ShareButton } from "./ShareButton";
 
 interface Match {
@@ -11,9 +12,14 @@ interface Match {
 	team2: string;
 	score1: number | null;
 	score2: number | null;
+	team1_r1: number | null;
+	team1_r2: number | null;
+	team2_r1: number | null;
+	team2_r2: number | null;
 	winner?: number | null;
 	station: string;
-	stage: string;
+	stage?: string;
+	isBye?: boolean;
 }
 
 interface MatchDetailViewProps {
@@ -47,9 +53,10 @@ export function MatchDetailView({
 			initial={{ opacity: 0, x: 50 }}
 			animate={{ opacity: 1, x: 0 }}
 			exit={{ opacity: 0, x: -50 }}
-			className="w-full flex flex-col items-center max-w-sm"
+			className="w-full flex flex-col items-center max-w-2xl"
 		>
 			<MatchDetailHeader onBack={onBack} />
+			<ScoringInfo phase={currentPhase} />
 			<ScoreboardDetail match={match} />
 			<ShareButton
 				match={match}

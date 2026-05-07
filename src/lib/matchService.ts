@@ -7,9 +7,12 @@ export interface Match {
 	team2: string;
 	score1: number | null;
 	score2: number | null;
+	team1_r1: number | null;
+	team1_r2: number | null;
+	team2_r1: number | null;
+	team2_r2: number | null;
 	winner: number | null;
 	station: string;
-	stage?: string;
 	isBye?: boolean;
 }
 
@@ -55,7 +58,6 @@ export function transformSheetDataToMatches(
 	sheetData: string[][],
 	phaseId: string,
 	baseStation: string = "A",
-	stage: string = "QF",
 ): Match[] {
 	return sheetData
 		.map((row, index) => {
@@ -85,9 +87,12 @@ export function transformSheetDataToMatches(
 					team2: "",
 					score1: null,
 					score2: null,
+					team1_r1: null,
+					team1_r2: null,
+					team2_r1: null,
+					team2_r2: null,
 					winner: 0, // Team 1 automatically wins a bye
 					station: `${baseStation}-${String(index + 1).padStart(2, "0")}`,
-					stage,
 					isBye: true,
 				} as Match;
 			}
@@ -105,9 +110,12 @@ export function transformSheetDataToMatches(
 				team2,
 				score1,
 				score2,
+				team1_r1,
+				team1_r2,
+				team2_r1,
+				team2_r2,
 				winner,
 				station: `${baseStation}-${String(index + 1).padStart(2, "0")}`,
-				stage,
 				isBye: false,
 			} as Match;
 		})

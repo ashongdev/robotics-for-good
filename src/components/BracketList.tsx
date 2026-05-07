@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
-import { MatchNode } from "./MatchNode";
 import { ByeCard } from "./ByeCard";
+import { MatchNode } from "./MatchNode";
 
 interface Match {
 	id: string;
@@ -8,8 +8,13 @@ interface Match {
 	team2: string;
 	score1: number | null;
 	score2: number | null;
+	team1_r1: number | null;
+	team1_r2: number | null;
+	team2_r1: number | null;
+	team2_r2: number | null;
 	winner: number | null;
 	station: string;
+	stage?: string;
 	isBye?: boolean;
 }
 
@@ -25,16 +30,15 @@ export function BracketList({ matches, onSelectMatch }: BracketListProps) {
 			initial={{ opacity: 0, scale: 0.98 }}
 			animate={{ opacity: 1, scale: 1 }}
 			exit={{ opacity: 0, scale: 1.02 }}
-			className="w-full flex flex-col items-center max-w-sm"
+			className="w-full flex flex-col items-center max-w-6xl mx-auto"
 		>
-			<div className="w-full pb-24">
-				{matches.map((m, i) => (
+			<div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-24">
+				{matches.map((m, i) =>
 					m.isBye ? (
 						<ByeCard
 							key={m.id || i}
 							team={m.team1}
 							station={m.station}
-							stage={m.stage || "BYE"}
 							onClick={() => onSelectMatch(m)}
 						/>
 					) : (
@@ -43,8 +47,8 @@ export function BracketList({ matches, onSelectMatch }: BracketListProps) {
 							match={m}
 							onClick={() => onSelectMatch(m)}
 						/>
-					)
-				))}
+					),
+				)}
 			</div>
 		</motion.div>
 	);

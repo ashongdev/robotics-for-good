@@ -43,7 +43,6 @@ export function useSheetMatches(spreadsheetId: string, range: string) {
 export function parseSheetMatches(
 	sheetData: string[][],
 	phaseId: string,
-	stage: string = "QF",
 	stationPrefix: string = "A",
 ): Match[] {
 	return sheetData
@@ -81,7 +80,6 @@ export function parseSheetMatches(
 				score2,
 				winner,
 				station: `${stationPrefix}-${String(index + 1).padStart(2, "0")}`,
-				stage,
 			} as Match;
 		})
 		.filter((match): match is Match => match !== null);

@@ -5,6 +5,7 @@ import { BracketList } from "./components/BracketList";
 import { CategoryToggle } from "./components/CategoryToggle";
 import { MatchDetailView } from "./components/MatchDetailView";
 import { PhaseNavigation } from "./components/PhaseNavigation";
+import { ScoringInfo } from "./components/ScoringInfo";
 import { useEffects } from "./hooks/useEffects";
 import type { Match } from "./lib/matchService";
 import { transformSheetDataToMatches } from "./lib/matchService";
@@ -143,11 +144,12 @@ export default function App() {
 		<div className="min-h-screen bg-editorial-bg text-editorial-ink font-sans selection:bg-editorial-gold selection:text-white border-[12px] md:border-[24px] border-editorial-ink flex flex-col items-center bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')] p-6 overflow-x-hidden relative">
 			<AnimatePresence mode="wait">
 				{!selectedMatch ? (
-					<div className="w-full flex flex-col items-center max-w-sm">
+					<div className="w-full flex flex-col items-center">
 						<CategoryToggle
 							category={category}
 							onChange={setCategory}
 						/>
+						<ScoringInfo phase={currentPhase} />
 						{query.isLoading && (
 							<div className="text-center py-8">
 								<p className="text-sm text-slate-600">

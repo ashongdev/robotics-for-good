@@ -9,7 +9,6 @@ interface MatchNodeProps {
 		score2: number | null;
 		winner: number | null;
 		station: string;
-		stage?: string;
 		isBye?: boolean;
 	};
 	onClick: () => void;
@@ -21,11 +20,11 @@ export function MatchNode({ match, onClick }: MatchNodeProps) {
 			whileHover={{ x: 4, y: 4 }}
 			whileTap={{ scale: 0.98 }}
 			onClick={onClick}
-			className="w-full max-w-sm border-2 border-editorial-ink bg-white shadow-[8px_8px_0px_0px_rgba(26,26,26,1)] mb-8 overflow-hidden cursor-pointer active:shadow-none transition-shadow"
+			className="w-full border-2 border-editorial-ink bg-white shadow-[8px_8px_0px_0px_rgba(26,26,26,1)] overflow-hidden cursor-pointer active:shadow-none transition-shadow h-full"
 		>
 			<div className="flex justify-between items-center px-4 py-2 border-b-2 border-editorial-ink bg-slate-50">
 				<span className="text-[10px] font-black uppercase tracking-[0.2em] text-editorial-gold">
-					STAGE / {match.stage}
+					STAGE
 				</span>
 				<span className="font-mono text-[10px] font-bold py-0.5 px-2 border border-editorial-ink">
 					STATION {match.station}
