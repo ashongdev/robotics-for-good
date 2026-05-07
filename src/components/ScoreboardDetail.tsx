@@ -2,12 +2,12 @@ interface Match {
 	id: string;
 	team1: string;
 	team2: string;
-	score1: number | null;
-	score2: number | null;
-	team1_r1: number | null;
-	team1_r2: number | null;
-	team2_r1: number | null;
-	team2_r2: number | null;
+	team1Score: number | null;
+	team2Score: number | null;
+	team1R1: number | null;
+	team1R2: number | null;
+	team2R1: number | null;
+	team2R2: number | null;
 	winner?: number | null;
 	station: string;
 	isBye?: boolean;
@@ -38,7 +38,7 @@ export function ScoreboardDetail({ match }: ScoreboardDetailProps) {
 						<div className="h-[2px] flex-1 bg-editorial-ink" />
 					</div>
 					<p className="text-[10px] font-black uppercase tracking-[0.2em] mt-4 text-editorial-ink">
-						Station {match.station}
+						Table {match.station}
 					</p>
 				</div>
 			</div>
@@ -50,7 +50,7 @@ export function ScoreboardDetail({ match }: ScoreboardDetailProps) {
 			{/* Header with match info */}
 			<div className="px-4 py-3 border-b-2 border-editorial-ink bg-slate-50">
 				<p className="text-[10px] font-black uppercase tracking-widest text-center text-editorial-gold">
-					Match Details - Station {match.station}
+					Match Details - Table {match.station}
 				</p>
 			</div>
 
@@ -72,7 +72,7 @@ export function ScoreboardDetail({ match }: ScoreboardDetailProps) {
 								Round 1
 							</span>
 							<span className="font-mono text-lg font-black">
-								{match.team1_r1 ?? "--"}
+								{match.team1R1 ?? "--"}
 							</span>
 						</div>
 						<div className="flex justify-between items-center text-sm">
@@ -80,7 +80,7 @@ export function ScoreboardDetail({ match }: ScoreboardDetailProps) {
 								Round 2
 							</span>
 							<span className="font-mono text-lg font-black">
-								{match.team1_r2 ?? "--"}
+								{match.team1R2 ?? "--"}
 							</span>
 						</div>
 						<div className="h-[2px] bg-editorial-ink/20 my-4" />
@@ -89,7 +89,7 @@ export function ScoreboardDetail({ match }: ScoreboardDetailProps) {
 								Total
 							</span>
 							<span className="font-mono text-3xl font-black text-editorial-ink">
-								{match.score1 ?? "--"}
+								{match.team1Score ?? "--"}
 							</span>
 						</div>
 					</div>
@@ -117,7 +117,7 @@ export function ScoreboardDetail({ match }: ScoreboardDetailProps) {
 								Round 1
 							</span>
 							<span className="font-mono text-lg font-black">
-								{match.team2_r1 ?? "--"}
+								{match.team2R1 ?? "--"}
 							</span>
 						</div>
 						<div className="flex justify-between items-center text-sm">
@@ -125,7 +125,7 @@ export function ScoreboardDetail({ match }: ScoreboardDetailProps) {
 								Round 2
 							</span>
 							<span className="font-mono text-lg font-black">
-								{match.team2_r2 ?? "--"}
+								{match.team2R2 ?? "--"}
 							</span>
 						</div>
 						<div className="h-[2px] bg-editorial-ink/20 my-4" />
@@ -134,7 +134,7 @@ export function ScoreboardDetail({ match }: ScoreboardDetailProps) {
 								Total
 							</span>
 							<span className="font-mono text-3xl font-black text-editorial-ink">
-								{match.score2 ?? "--"}
+								{match.team2Score ?? "--"}
 							</span>
 						</div>
 					</div>

@@ -26,12 +26,21 @@ export default function App() {
 	const { effects, triggerEffect } = useEffects();
 
 	const PHASES = [
-		{ phase: 0, sheetName: "PHASE_0", phaseName: "00 / INITIAL SEEDING" },
-		{ phase: 1, sheetName: "PHASE_1", phaseName: "01 / SEMI FINALS" },
-		{ phase: 2, sheetName: "PHASE_2", phaseName: "02 / CHAMPIONSHIP" },
-		{ phase: 3, sheetName: "PHASE_3", phaseName: "03 / SPECIAL" },
+		{ phase: 0, sheetName: "PHASE_0", phaseName: "00" },
+		{ phase: 1, sheetName: "PHASE_1", phaseName: "01" },
+		{ phase: 2, sheetName: "PHASE_2", phaseName: "02" },
+		{ phase: 3, sheetName: "PHASE_3", phaseName: "03" },
+		{ phase: 4, sheetName: "PHASE_4", phaseName: "04" },
+		{ phase: 5, sheetName: "PHASE_5", phaseName: "05" },
+		{ phase: 6, sheetName: "PHASE_6", phaseName: "06" },
+		{ phase: 7, sheetName: "PHASE_7", phaseName: "07" },
 	];
 	const phase = PHASES[currentPhase];
+
+	const spreadSheetId =
+		category == "senior"
+			? import.meta.env.VITE_SENIOR_SPREADSHEET_ID
+			: import.meta.env.VITE_JUNIOR_SPREADSHEET_ID;
 
 	const fetchData = async () => {
 		if (!phase) return { junior: [], senior: [] };
@@ -53,8 +62,7 @@ export default function App() {
 						return Promise.all([
 							(gapi.client as any).sheets.spreadsheets.values.get(
 								{
-									spreadsheetId: import.meta.env
-										.VITE_SPREADSHEET_ID,
+									spreadsheetId: spreadSheetId,
 									range: `${phase.sheetName}!A2:I100`,
 									valueRenderOption: "FORMATTED_VALUE",
 								},
@@ -78,7 +86,7 @@ export default function App() {
 	};
 
 	const query = useQuery({
-		queryKey: ["scores", currentPhase],
+		queryKey: ["scores", currentPhase, category],
 		queryFn: fetchData,
 		enabled: true,
 		refetchInterval: 60000,
@@ -116,7 +124,7 @@ export default function App() {
 
 	const handleShare = async () => {
 		if (!selectedMatch) return;
-		const shareText = `FIELD REPORT: ${selectedMatch.team1} (${selectedMatch.score1 ?? 0}) vs ${selectedMatch.team2} (${selectedMatch.score2 ?? 0}) at Station ${selectedMatch.station}. Phase Index ${currentPhase < 10 ? `0${currentPhase}` : currentPhase}.`;
+		const shareText = `FIELD REPORT: ${selectedMatch.team1} (${selectedMatch.team1Score ?? 0}) vs ${selectedMatch.team2} (${selectedMatch.team2Score ?? 0}) at Table ${selectedMatch.station}. Phase Index ${currentPhase < 10 ? `0${currentPhase}` : currentPhase}.`;
 
 		if (navigator.share) {
 			try {

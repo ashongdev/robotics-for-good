@@ -5,8 +5,8 @@ interface MatchNodeProps {
 		id: string;
 		team1: string;
 		team2: string;
-		score1: number | null;
-		score2: number | null;
+		team1Score: number | null;
+		team2Score: number | null;
 		winner: number | null;
 		station: string;
 		isBye?: boolean;
@@ -27,7 +27,7 @@ export function MatchNode({ match, onClick }: MatchNodeProps) {
 					STAGE
 				</span>
 				<span className="font-mono text-[10px] font-bold py-0.5 px-2 border border-editorial-ink">
-					STATION {match.station}
+					TABLE {match.station}
 				</span>
 			</div>
 			<div className="p-6 space-y-5">
@@ -38,7 +38,7 @@ export function MatchNode({ match, onClick }: MatchNodeProps) {
 						{match.team1}
 					</span>
 					<span className="font-mono text-xl font-black">
-						{match.score1 ?? "--"}
+						{match.team1Score ?? "--"}
 					</span>
 				</div>
 				<div className="flex items-center gap-4 py-2">
@@ -55,7 +55,7 @@ export function MatchNode({ match, onClick }: MatchNodeProps) {
 						{match.team2}
 					</span>
 					<span className="font-mono text-xl font-black">
-						{match.score2 ?? "--"}
+						{match.team2Score ?? "--"}
 					</span>
 				</div>
 			</div>

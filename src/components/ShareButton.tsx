@@ -4,8 +4,8 @@ interface ShareButtonProps {
 	match: {
 		team1: string;
 		team2: string;
-		score1: number | null;
-		score2: number | null;
+		team1Score: number | null;
+		team2Score: number | null;
 		station: string;
 	};
 	currentPhase: number;

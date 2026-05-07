@@ -11,8 +11,8 @@ export interface SheetMatchData {
 export interface ParsedMatch {
 	team1: string;
 	team2: string;
-	score1: number;
-	score2: number;
+	team1Score: number;
+	team2Score: number;
 	winner: number | null;
 }
 
@@ -20,20 +20,20 @@ export function parseSheetMatch(row: string[]): ParsedMatch | null {
 	if (!row || row.length < 9) return null;
 
 	const team1 = row[0]?.trim();
-	const team1_r1 = parseInt(row[1] || "0", 10) || 0;
-	const team1_r2 = parseInt(row[2] || "0", 10) || 0;
+	const team1R1 = parseInt(row[1] || "0", 10) || 0;
+	const team1R2 = parseInt(row[2] || "0", 10) || 0;
 
 	const team2 = row[4]?.trim();
-	const team2_r1 = parseInt(row[5] || "0", 10) || 0;
-	const team2_r2 = parseInt(row[6] || "0", 10) || 0;
+	const team2R1 = parseInt(row[5] || "0", 10) || 0;
+	const team2R2 = parseInt(row[6] || "0", 10) || 0;
 
 	const winningTeam = row[8]?.trim();
 
 	// Skip empty rows
 	if (!team1 || !team2) return null;
 
-	const score1 = team1_r1 + team1_r2;
-	const score2 = team2_r1 + team2_r2;
+	const team1Score = team1R1 + team1R2;
+	const team2Score = team2R1 + team2R2;
 
 	let winner: number | null = null;
 	if (winningTeam === team1) {
@@ -45,8 +45,8 @@ export function parseSheetMatch(row: string[]): ParsedMatch | null {
 	return {
 		team1,
 		team2,
-		score1,
-		score2,
+		team1Score,
+		team2Score,
 		winner,
 	};
 }

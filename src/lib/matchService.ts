@@ -5,12 +5,12 @@ export interface Match {
 	id: string;
 	team1: string;
 	team2: string;
-	score1: number | null;
-	score2: number | null;
-	team1_r1: number | null;
-	team1_r2: number | null;
-	team2_r1: number | null;
-	team2_r2: number | null;
+	team1Score: number | null;
+	team2Score: number | null;
+	team1R1: number | null;
+	team1R2: number | null;
+	team2R1: number | null;
+	team2R2: number | null;
 	winner: number | null;
 	station: string;
 	isBye?: boolean;
@@ -35,12 +35,15 @@ export async function fetchMatchesFromFirestore(
 				id: doc.id,
 				team1: data.team1 || "",
 				team2: data.team2 || "",
-				score1: data.score1 ?? null,
-				score2: data.score2 ?? null,
+				team1Score: data.team1Score ?? null,
+				team2Score: data.team2Score ?? null,
+				team1R1: data.team1R1 ?? null,
+				team1R2: data.team1R2 ?? null,
+				team2R1: data.team2R1 ?? null,
+				team2R2: data.team2R2 ?? null,
 				winner: data.winner ?? null,
 				station:
-					data.station ||
-					`${division.charAt(0).toUpperCase()}-${String(index + 1).padStart(2, "0")}`,
+					data.station || `${String(index + 1).padStart(2, "0")}`,
 			});
 		});
 
@@ -64,20 +67,22 @@ export function transformSheetDataToMatches(
 			if (!row || row.length < 9) return null;
 
 			const team1 = row[0]?.trim();
-			const team1_r1 = parseInt(row[1] || "0", 10) || 0;
-			const team1_r2 = parseInt(row[2] || "0", 10) || 0;
+			const team1R1 = parseInt(row[1] || "0", 10) || 0;
+			const team1R2 = parseInt(row[2] || "0", 10) || 0;
+
+			const tableNumber = row[3]?.trim() || "";
 
 			const team2 = row[4]?.trim();
-			const team2_r1 = parseInt(row[5] || "0", 10) || 0;
-			const team2_r2 = parseInt(row[6] || "0", 10) || 0;
+			const team2R1 = parseInt(row[5] || "0", 10) || 0;
+			const team2R2 = parseInt(row[6] || "0", 10) || 0;
 
 			const winningTeam = row[8]?.trim();
 
 			// Skip empty rows
 			if (!team1) return null;
 
-			const score1 = team1_r1 + team1_r2;
-			const score2 = team2_r1 + team2_r2;
+			const team1Score = team1R1 + team1R2;
+			const team2Score = team2R1 + team2R2;
 
 			// Handle bye scenario (only team1, no team2)
 			if (!team2) {
@@ -85,14 +90,16 @@ export function transformSheetDataToMatches(
 					id: `${phaseId}-${index}`,
 					team1,
 					team2: "",
-					score1: null,
-					score2: null,
-					team1_r1: null,
-					team1_r2: null,
-					team2_r1: null,
-					team2_r2: null,
+					team1Score: null,
+					team2Score: null,
+					team1R1: null,
+					team1R2: null,
+					team2R1: null,
+					team2R2: null,
 					winner: 0, // Team 1 automatically wins a bye
-					station: `${baseStation}-${String(index + 1).padStart(2, "0")}`,
+					station:
+						tableNumber ||
+						`${baseStation}-${String(index + 1).padStart(2, "0")}`,
 					isBye: true,
 				} as Match;
 			}
@@ -108,14 +115,14 @@ export function transformSheetDataToMatches(
 				id: `${phaseId}-${index}`,
 				team1,
 				team2,
-				score1,
-				score2,
-				team1_r1,
-				team1_r2,
-				team2_r1,
-				team2_r2,
+				team1Score,
+				team2Score,
+				team1R1,
+				team1R2,
+				team2R1,
+				team2R2,
 				winner,
-				station: `${baseStation}-${String(index + 1).padStart(2, "0")}`,
+				station: tableNumber || `${String(index + 1).padStart(2, "0")}`,
 				isBye: false,
 			} as Match;
 		})

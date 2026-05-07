@@ -9,12 +9,12 @@ interface Match {
 	id: string;
 	team1: string;
 	team2: string;
-	score1: number | null;
-	score2: number | null;
-	team1_r1: number | null;
-	team1_r2: number | null;
-	team2_r1: number | null;
-	team2_r2: number | null;
+	team1Score: number | null;
+	team2Score: number | null;
+	team1R1: number | null;
+	team1R2: number | null;
+	team2R1: number | null;
+	team2R2: number | null;
 	winner?: number | null;
 	station: string;
 	stage?: string;
