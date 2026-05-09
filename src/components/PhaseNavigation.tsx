@@ -39,7 +39,7 @@ export function PhaseNavigation({
 			</div>
 			<div className="border-y-4 border-editorial-ink py-4 text-center bg-white shadow-[4px_4px_0px_0px_rgba(26,26,26,0.05)]">
 				<span className="text-[12px] uppercase font-black tracking-[0.3em] font-serif italic text-editorial-gold">
-					PHASE {phaseName}
+					{phaseName}
 				</span>
 			</div>
 		</header>

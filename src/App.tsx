@@ -8,6 +8,7 @@ import { InfoModal } from "./components/InfoModal";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { MatchDetailView } from "./components/MatchDetailView";
 import { PhaseNavigation } from "./components/PhaseNavigation";
+import { QualifiersTable } from "./components/QualifiersTable";
 import { RulesPage } from "./components/RulesPage";
 import { useEffects } from "./hooks/useEffects";
 import type { Match } from "./lib/matchService";
@@ -112,6 +113,9 @@ export default function App() {
 		}
 	}, [query.isError, currentPhase]);
 
+	// Check if current phase is qualifiers
+	const isQualifiersPhase = phase?.sheetName === "QUALIFIERS";
+
 	// Transform raw sheet data into bracket structure
 	const brackets = useMemo(() => {
 		if (!query.data) {
@@ -122,6 +126,16 @@ export default function App() {
 			};
 		}
 
+		// For qualifiers phase, return raw data (no transformation needed)
+		if (isQualifiersPhase) {
+			return {
+				phaseName: phase?.phaseName || "",
+				junior: query.data.junior,
+				senior: query.data.senior,
+			};
+		}
+
+		// For regular phases, transform into bracket structure
 		const juniorMatches = transformSheetDataToMatches(
 			query.data.junior,
 			`phase-${currentPhase}`,
@@ -139,7 +153,7 @@ export default function App() {
 			junior: juniorMatches,
 			senior: seniorMatches,
 		} as BracketPhase;
-	}, [query.data, currentPhase, phase]);
+	}, [query.data, currentPhase, phase, isQualifiersPhase]);
 
 	const handleShare = async () => {
 		if (!selectedMatch) return;
@@ -222,7 +236,7 @@ export default function App() {
 							{query.error && (
 								<div className="text-center py-8">
 									<p className="text-sm text-red-600">
-										Error loading matches
+										Error loading data
 									</p>
 								</div>
 							)}
@@ -234,10 +248,16 @@ export default function App() {
 										onPrevPhase={prevPhase}
 										onNextPhase={nextPhase}
 									/>
-									<BracketList
-										matches={activeMatches}
-										onSelectMatch={setSelectedMatch}
-									/>
+									{isQualifiersPhase ? (
+										<QualifiersTable
+											data={brackets.junior}
+										/>
+									) : (
+										<BracketList
+											matches={activeMatches}
+											onSelectMatch={setSelectedMatch}
+										/>
+									)}
 								</>
 							)}
 						</div>
