@@ -31,10 +31,10 @@ export default function App() {
 	const { effects, triggerEffect } = useEffects();
 
 	const PHASES = [
-		{ phase: 0, sheetName: "PHASE_0", phaseName: "00" },
-		{ phase: 1, sheetName: "PHASE_1", phaseName: "01" },
-		{ phase: 2, sheetName: "PHASE_2", phaseName: "02" },
-		{ phase: 3, sheetName: "PHASE_3", phaseName: "03" },
+		{ phase: 0, sheetName: "QUALIFIERS", phaseName: "QUALIFIERS" },
+		{ phase: 1, sheetName: "QUARTERS", phaseName: "ROUND OF 8" },
+		{ phase: 2, sheetName: "SEMIS", phaseName: "ROUND OF 4" },
+		{ phase: 3, sheetName: "FINAL", phaseName: "FINAL" },
 		{ phase: 4, sheetName: "PHASE_4", phaseName: "04" },
 		{ phase: 5, sheetName: "PHASE_5", phaseName: "05" },
 		{ phase: 6, sheetName: "PHASE_6", phaseName: "06" },

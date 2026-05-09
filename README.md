@@ -10,11 +10,17 @@ View your app in AI Studio: https://ai.studio/apps/e2bd1d60-98d9-475a-8e0e-262f1
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
-
+**Prerequisites:** Node.js
 
 1. Install dependencies:
    `npm install`
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+<!-- Competition Running -->
+
+1. Competiton starts and runs in 4 phases. Each team gets to run times.
+2. After these runs, the top eight proceed to the elimination phase. Qualification to the elimination stage is based on the teams with the highest number of points across all four rounds.
+3. Each elimination match runs once and the winner proceeds.
+4. After the Round of 4(Semis), winners advance to final and losers are matched up for a quaterfinal

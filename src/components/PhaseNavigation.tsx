@@ -27,8 +27,7 @@ export function PhaseNavigation({
 						Phase Index
 					</h1>
 					<p className="text-5xl font-serif font-black italic tracking-tighter leading-none">
-						PHASE{" "}
-						{currentPhase < 10 ? `0${currentPhase}` : currentPhase}
+						{phaseName}
 					</p>
 				</div>
 				<button
