@@ -1,4 +1,34 @@
-import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+function AnimatedPanel({
+	isOpen,
+	children,
+}: {
+	isOpen: boolean;
+	children: React.ReactNode;
+}) {
+	const ref = useRef<HTMLDivElement>(null);
+	const [height, setHeight] = useState(0);
+
+	useEffect(() => {
+		if (ref.current) {
+			setHeight(isOpen ? ref.current.scrollHeight : 0);
+		}
+	}, [isOpen, children]);
+
+	return (
+		<div
+			style={{
+				height: `${height}px`,
+				overflow: "hidden",
+				transition: "height 250ms cubic-bezier(0.4, 0, 0.2, 1)",
+			}}
+		>
+			<div ref={ref}>{children}</div>
+		</div>
+	);
+}
 
 interface QualifierTeam {
 	rank: number;
@@ -18,6 +48,8 @@ export function QualifiersTable({ data }: QualifiersTableProps) {
 	const [selectedTeam, setSelectedTeam] = useState<QualifierTeam | null>(
 		null,
 	);
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 10;
 
 	if (!data || data.length === 0) {
 		return (
@@ -39,218 +71,223 @@ export function QualifiersTable({ data }: QualifiersTableProps) {
 		total: row[5] || "0",
 	}));
 
-	// Sort by total score descending
 	const sortedQualifiers = [...qualifiers].sort(
 		(a, b) => parseInt(b.total) - parseInt(a.total),
 	);
 
-	// Determine how many teams progress (top 8)
 	const progressCount = Math.min(8, sortedQualifiers.length);
 
+	const totalPages = Math.ceil(sortedQualifiers.length / itemsPerPage);
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
+	const pageQualifiers = sortedQualifiers.slice(startIndex, endIndex);
+
+	const handleNextPage = () => {
+		if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+	};
+
+	const handlePrevPage = () => {
+		if (currentPage > 1) setCurrentPage(currentPage - 1);
+	};
+
 	return (
-		<div className="w-full max-w-6xl mx-auto px-4 md:px-0">
-			{/* Header */}
-			<div className="mb-12">
-				<h2 className="text-3xl md:text-4xl font-black uppercase tracking-widest text-editorial-ink mb-4">
+		<div className="w-full max-w-6xl mx-auto space-y-0">
+			{/* ── Title block ── */}
+			<div className="px-4 md:px-0 pb-5">
+				<h2 className="text-3xl md:text-4xl font-black uppercase tracking-widest text-editorial-ink">
 					Standings
 				</h2>
-				<div className="w-16 h-1 bg-editorial-gold mb-4"></div>
-				<p className="text-sm text-gray-600">
-					<span className="inline-block w-3 h-3 bg-editorial-gold mr-2"></span>
-					Top {progressCount} teams progress to next round
-				</p>
-				<p className="text-xs text-gray-500 mt-2">
-					Click a team to view all details
+				<div className="w-16 h-1 bg-editorial-gold mt-3 mb-3" />
+				<p className="text-xs text-gray-500 flex items-center gap-2">
+					<span className="inline-block w-3 h-3 bg-editorial-gold" />
+					Top {progressCount} teams progress · tap a row to expand
 				</p>
 			</div>
 
-			{/* Rankings Table */}
-			<div className="overflow-x-hidden">
-				<table className="w-full border-collapse bg-white border-2 border-editorial-ink shadow-[3px_3px_0px_0px_rgba(26,26,26,0.2)]">
-					<thead>
-						<tr className="bg-editorial-ink text-white">
-							<th className="px-2 md:px-4 py-4 text-left text-xs font-black uppercase tracking-widest border-b-2 border-editorial-ink w-10 md:w-12">
-								Rank
-							</th>
-							<th className="px-2 md:px-4 py-4 text-left text-xs font-black uppercase tracking-widest border-b-2 border-editorial-ink flex-1 min-w-0">
-								Team Name
-							</th>
-							<th className="hidden sm:table-cell px-2 md:px-4 py-4 text-center text-xs font-black uppercase tracking-widest border-b-2 border-editorial-ink w-12">
-								R1
-							</th>
-							<th className="hidden md:table-cell px-2 md:px-4 py-4 text-center text-xs font-black uppercase tracking-widest border-b-2 border-editorial-ink w-12">
-								R2
-							</th>
-							<th className="hidden md:table-cell px-2 md:px-4 py-4 text-center text-xs font-black uppercase tracking-widest border-b-2 border-editorial-ink w-12">
-								R3
-							</th>
-							<th className="hidden lg:table-cell px-2 md:px-4 py-4 text-center text-xs font-black uppercase tracking-widest border-b-2 border-editorial-ink w-12">
-								R4
-							</th>
-							<th className="px-2 md:px-4 py-4 text-center text-xs font-black uppercase tracking-widest border-b-2 border-editorial-ink w-14">
-								Total
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{sortedQualifiers.map((qualifier, index) => {
-							// Check if team progresses to next round
-							const progresses = index < progressCount;
+			{/* ── Column header ── */}
+			<div className="flex items-center gap-3 px-3 py-2 bg-editorial-ink border-2 border-editorial-ink border-l-4 border-l-editorial-ink">
+				<span className="w-8 flex-shrink-0 text-[10px] font-black uppercase tracking-widest text-white/60">
+					#
+				</span>
+				<span className="flex-1 min-w-0 text-[10px] font-black uppercase tracking-widest text-white/60">
+					Team
+				</span>
+				<span className="hidden sm:flex items-center gap-1 flex-shrink-0">
+					{["R1", "R2", "R3", "R4"].map((r) => (
+						<span
+							key={r}
+							className="inline-flex items-center justify-center w-9 text-[10px] font-black uppercase tracking-widest text-white/60"
+						>
+							{r}
+						</span>
+					))}
+				</span>
+				<span className="flex-shrink-0 w-12 text-right text-[10px] font-black uppercase tracking-widest text-white/60">
+					Total
+				</span>
+			</div>
 
-							return (
-								<tr
-									key={index}
-									onClick={() => setSelectedTeam(qualifier)}
-									className={`border-b-2 border-editorial-ink border-l-4 cursor-pointer ${
-										progresses
-											? "border-l-editorial-gold bg-white hover:bg-editorial-gold/5"
-											: "border-l-transparent bg-white hover:bg-gray-50"
-									} transition-colors`}
+			{/* ── Ranked list ── */}
+			<div className="space-y-0">
+				{pageQualifiers.map((qualifier, index) => {
+					const actualIndex = startIndex + index;
+					const progresses = actualIndex < progressCount;
+					const isExpanded = selectedTeam?.team === qualifier.team;
+
+					return (
+						<div key={actualIndex}>
+							{/* Row */}
+							<button
+								onClick={() =>
+									setSelectedTeam(
+										isExpanded ? null : qualifier,
+									)
+								}
+								className={`w-full text-left flex items-center gap-3 px-3 py-3 border-t border-b-0 border-r-0 border-editorial-ink/20 border-l-4 transition-colors ${
+									progresses
+										? "border-l-editorial-gold"
+										: "border-l-transparent"
+								} ${
+									isExpanded
+										? "bg-editorial-ink text-white"
+										: "bg-white hover:bg-editorial-gold/5"
+								}`}
+							>
+								{/* Rank badge */}
+								<span
+									className={`w-8 h-8 flex-shrink-0 flex items-center justify-center border-2 font-black text-sm ${
+										isExpanded
+											? "border-white text-white"
+											: "border-editorial-ink text-editorial-ink"
+									}`}
 								>
-									<td className="px-2 md:px-4 py-4 text-center font-black text-sm md:text-lg text-editorial-ink">
-										{index + 1}
-										{progresses && (
-											<span className="ml-1 text-editorial-gold">
-												↑
-											</span>
-										)}
-									</td>
-									<td className="px-2 md:px-4 py-4 text-xs md:text-sm font-semibold text-editorial-ink truncate md:truncate-none">
-										{qualifier.team}
-									</td>
-									<td className="hidden sm:table-cell px-2 md:px-4 py-4 text-center text-xs md:text-sm font-bold text-editorial-ink">
-										{qualifier.r1}
-									</td>
-									<td className="hidden md:table-cell px-2 md:px-4 py-4 text-center text-xs md:text-sm font-bold text-editorial-ink">
-										{qualifier.r2}
-									</td>
-									<td className="hidden md:table-cell px-2 md:px-4 py-4 text-center text-xs md:text-sm font-bold text-editorial-ink">
-										{qualifier.r3}
-									</td>
-									<td className="hidden lg:table-cell px-2 md:px-4 py-4 text-center text-xs md:text-sm font-bold text-editorial-ink">
-										{qualifier.r4}
-									</td>
-									<td
-										className={`px-2 md:px-4 py-4 text-center text-xs md:text-sm font-black uppercase ${
-											parseInt(qualifier.total) > 0
+									{actualIndex + 1}
+								</span>
+
+								{/* Team name */}
+								<span
+									className={`flex-1 min-w-0 text-sm font-semibold truncate ${
+										isExpanded
+											? "text-white"
+											: "text-editorial-ink"
+									}`}
+								>
+									{qualifier.team}
+								</span>
+
+								{/* Round pills — hidden on very small screens */}
+								<span className="hidden sm:flex items-center gap-1 flex-shrink-0">
+									{[
+										qualifier.r1,
+										qualifier.r2,
+										qualifier.r3,
+										qualifier.r4,
+									].map((score, i) => (
+										<span
+											key={i}
+											className={`inline-flex items-center justify-center w-9 h-7 text-xs font-bold border ${
+												isExpanded
+													? "border-white/40 text-white"
+													: "border-editorial-ink/20 text-editorial-ink"
+											}`}
+										>
+											{score}
+										</span>
+									))}
+								</span>
+
+								{/* Total */}
+								<span
+									className={`flex-shrink-0 w-12 text-right text-sm font-black ${
+										isExpanded
+											? "text-editorial-gold"
+											: parseInt(qualifier.total) > 0
 												? "text-editorial-green"
 												: "text-gray-400"
-										}`}
-									>
-										{qualifier.total}
-									</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</table>
+									}`}
+								>
+									{qualifier.total}
+								</span>
+							</button>
+
+							{/* Inline expanded detail — animated */}
+							<AnimatedPanel isOpen={isExpanded}>
+								<div className="bg-white border-t border-editorial-ink/10 px-4 py-4">
+									<div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+										{[
+											{
+												label: "Round 1",
+												score: qualifier.r1,
+											},
+											{
+												label: "Round 2",
+												score: qualifier.r2,
+											},
+											{
+												label: "Round 3",
+												score: qualifier.r3,
+											},
+											{
+												label: "Round 4",
+												score: qualifier.r4,
+											},
+										].map((round) => (
+											<div
+												key={round.label}
+												className="flex items-center justify-between sm:flex-col sm:items-center sm:justify-center p-3 bg-gray-50 border border-editorial-ink/15 sm:text-center"
+											>
+												<p className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+													{round.label}
+												</p>
+												<p className="text-xl font-black text-editorial-ink">
+													{round.score}
+												</p>
+											</div>
+										))}
+									</div>
+									<div className="flex items-center justify-between text-xs text-gray-400 pt-3 border-t border-gray-100">
+										<span>
+											Rank{" "}
+											<strong className="text-editorial-ink">
+												{actualIndex + 1}
+											</strong>{" "}
+											of {sortedQualifiers.length}
+										</span>
+										<span className="font-black text-editorial-green text-sm">
+											{qualifier.total} pts
+										</span>
+									</div>
+								</div>
+							</AnimatedPanel>
+						</div>
+					);
+				})}
 			</div>
 
-			{/* Stats Footer */}
-			<div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-				<div className="p-4 bg-white border-2 border-editorial-ink shadow-[2px_2px_0px_0px_rgba(26,26,26,0.1)]">
-					<p className="text-xs font-black uppercase tracking-widest text-editorial-ink mb-2">
-						Total Teams
-					</p>
-					<p className="text-3xl font-black text-editorial-gold">
-						{sortedQualifiers.length}
-					</p>
-				</div>
-				<div className="p-4 bg-white border-2 border-editorial-ink shadow-[2px_2px_0px_0px_rgba(26,26,26,0.1)]">
-					<p className="text-xs font-black uppercase tracking-widest text-editorial-ink mb-2">
-						Highest Score
-					</p>
-					<p className="text-3xl font-black text-editorial-green">
-						{sortedQualifiers.length > 0
-							? sortedQualifiers[0].total
-							: "—"}
-					</p>
-				</div>
-				<div className="p-4 bg-white border-2 border-editorial-ink shadow-[2px_2px_0px_0px_rgba(26,26,26,0.1)]">
-					<p className="text-xs font-black uppercase tracking-widest text-editorial-ink mb-2">
-						Rounds
-					</p>
-					<p className="text-3xl font-black text-editorial-ink">4</p>
-				</div>
-			</div>
-
-			{/* Detail Modal */}
-			{selectedTeam && (
-				<div
-					className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-					onClick={() => setSelectedTeam(null)}
-				>
-					<div
-						className="bg-white border-2 border-editorial-ink shadow-[4px_4px_0px_0px_rgba(26,26,26,0.3)] max-w-md w-full"
-						onClick={(e) => e.stopPropagation()}
+			{/* ── Pagination ── */}
+			<div className="pt-4 px-4 md:px-0">
+				<div className="flex items-center justify-start gap-2">
+					<button
+						onClick={handlePrevPage}
+						disabled={currentPage === 1}
+						className="flex items-center justify-center w-9 h-9 border-2 border-editorial-ink bg-white hover:bg-editorial-gold disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
 					>
-						<div className="sticky top-0 bg-editorial-ink text-white p-4 border-b-2 border-editorial-ink flex justify-between items-center">
-							<h3 className="text-lg font-black uppercase tracking-widest">
-								{selectedTeam.team}
-							</h3>
-							<button
-								onClick={() => setSelectedTeam(null)}
-								className="text-2xl leading-none hover:text-editorial-gold transition-colors"
-							>
-								×
-							</button>
-						</div>
-						<div className="p-6 space-y-4">
-							<div className="grid grid-cols-2 gap-4">
-								<div className="p-3 bg-gray-50 border-2 border-gray-200">
-									<p className="text-xs font-black uppercase tracking-widest text-editorial-ink mb-2">
-										Rank
-									</p>
-									<p className="text-2xl font-black text-editorial-ink">
-										{selectedTeam.rank}
-									</p>
-								</div>
-								<div className="p-3 bg-green-50 border-2 border-editorial-green">
-									<p className="text-xs font-black uppercase tracking-widest text-editorial-ink mb-2">
-										Total
-									</p>
-									<p className="text-2xl font-black text-editorial-green">
-										{selectedTeam.total}
-									</p>
-								</div>
-							</div>
-
-							<div className="border-t-2 border-editorial-ink pt-4">
-								<p className="text-xs font-black uppercase tracking-widest text-editorial-ink mb-3">
-									Round Scores
-								</p>
-								<div className="grid grid-cols-4 gap-2">
-									{[
-										{ label: "R1", score: selectedTeam.r1 },
-										{ label: "R2", score: selectedTeam.r2 },
-										{ label: "R3", score: selectedTeam.r3 },
-										{ label: "R4", score: selectedTeam.r4 },
-									].map((round) => (
-										<div
-											key={round.label}
-											className="p-3 bg-white border-2 border-editorial-ink text-center"
-										>
-											<p className="text-xs font-black uppercase tracking-widest text-gray-600 mb-1">
-												{round.label}
-											</p>
-											<p className="text-lg font-black text-editorial-ink">
-												{round.score}
-											</p>
-										</div>
-									))}
-								</div>
-							</div>
-
-							<button
-								onClick={() => setSelectedTeam(null)}
-								className="w-full bg-editorial-gold border-2 border-editorial-ink p-3 hover:bg-editorial-ink hover:text-editorial-gold transition-colors font-black uppercase tracking-widest text-sm mt-4"
-							>
-								Close
-							</button>
-						</div>
-					</div>
+						<ChevronLeft className="h-4 w-4" />
+					</button>
+					<button
+						onClick={handleNextPage}
+						disabled={currentPage === totalPages}
+						className="flex items-center justify-center w-9 h-9 border-2 border-editorial-ink bg-white hover:bg-editorial-gold disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+					>
+						<ChevronRight className="h-4 w-4" />
+					</button>
 				</div>
-			)}
+				<p className="text-[10px] text-gray-500 mt-2">
+					{startIndex + 1}–
+					{Math.min(endIndex, sortedQualifiers.length)} of{" "}
+					{sortedQualifiers.length} teams
+				</p>
+			</div>
 		</div>
 	);
 }
