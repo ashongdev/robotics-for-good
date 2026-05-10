@@ -1,3 +1,5 @@
+import { AnimatedScore } from "./AnimatedScore";
+
 interface Match {
 	id: string;
 	team1: string;
@@ -89,7 +91,11 @@ export function ScoreboardDetail({ match }: ScoreboardDetailProps) {
 								Total
 							</span>
 							<span className="font-mono text-3xl font-black text-editorial-ink">
-								{match.team1Score ?? "--"}
+								{match.team1Score ? (
+									<AnimatedScore value={match.team1Score} />
+								) : (
+									"--"
+								)}
 							</span>
 						</div>
 					</div>
@@ -134,7 +140,11 @@ export function ScoreboardDetail({ match }: ScoreboardDetailProps) {
 								Total
 							</span>
 							<span className="font-mono text-3xl font-black text-editorial-ink">
-								{match.team2Score ?? "--"}
+								{match.team2Score ? (
+									<AnimatedScore value={match.team2Score} />
+								) : (
+									"--"
+								)}
 							</span>
 						</div>
 					</div>

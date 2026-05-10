@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { AnimatedScore } from "./AnimatedScore";
 
 interface MatchNodeProps {
 	match: {
@@ -38,7 +39,11 @@ export function MatchNode({ match, onClick }: MatchNodeProps) {
 						{match.team1}
 					</span>
 					<span className="font-mono text-xl font-black">
-						{match.team1Score ?? "--"}
+						{match.team1Score ? (
+							<AnimatedScore value={match.team1Score} />
+						) : (
+							"--"
+						)}
 					</span>
 				</div>
 				<div className="flex items-center gap-4 py-2">
@@ -55,7 +60,11 @@ export function MatchNode({ match, onClick }: MatchNodeProps) {
 						{match.team2}
 					</span>
 					<span className="font-mono text-xl font-black">
-						{match.team2Score ?? "--"}
+						{match.team2Score ? (
+							<AnimatedScore value={match.team2Score} />
+						) : (
+							"--"
+						)}
 					</span>
 				</div>
 			</div>

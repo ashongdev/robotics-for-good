@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SCORING_RULES } from "../data/scoringRules";
+import { AnimatedScore } from "./AnimatedScore";
 import { CategoryToggle } from "./CategoryToggle";
 
 export function RulesPage() {
@@ -56,7 +57,7 @@ export function RulesPage() {
 								<td
 									className={`px-4 py-3 text-center text-sm font-black uppercase ${getPointColor(rule.points)}`}
 								>
-									{rule.points}
+									<AnimatedScore value={rule.points} />
 								</td>
 							</tr>
 						))}

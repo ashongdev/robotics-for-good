@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { AnimatedScore } from "./AnimatedScore";
 
 function AnimatedPanel({
 	isOpen,
@@ -191,7 +192,7 @@ export function QualifiersTable({ data }: QualifiersTableProps) {
 													: "border-editorial-ink/20 text-editorial-ink"
 											}`}
 										>
-											{score}
+											<AnimatedScore value={score} />
 										</span>
 									))}
 								</span>
@@ -206,7 +207,7 @@ export function QualifiersTable({ data }: QualifiersTableProps) {
 												: "text-gray-400"
 									}`}
 								>
-									{qualifier.total}
+									<AnimatedScore value={qualifier.total} />
 								</span>
 							</button>
 
@@ -240,7 +241,9 @@ export function QualifiersTable({ data }: QualifiersTableProps) {
 													{round.label}
 												</p>
 												<p className="text-xl font-black text-editorial-ink">
-													{round.score}
+													<AnimatedScore
+														value={round.score}
+													/>
 												</p>
 											</div>
 										))}
@@ -254,7 +257,10 @@ export function QualifiersTable({ data }: QualifiersTableProps) {
 											of {sortedQualifiers.length}
 										</span>
 										<span className="font-black text-editorial-green text-sm">
-											{qualifier.total} pts
+											<AnimatedScore
+												value={qualifier.total}
+											/>{" "}
+											pts
 										</span>
 									</div>
 								</div>
