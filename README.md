@@ -1,26 +1,60 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+  <img width="1200" height="475" alt="AI for Good Ghana Banner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+
+  <h1>Robotics for Good Youth Challenge — Ghana 2026</h1>
+
+  <p>Live scoring and bracket platform for Ghana's national qualifying tournament for the UN/ITU global robotics competition, organised by <a href="https://makersplacegh.com">The MakersPlace</a>.</p>
+
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
 </div>
 
-# Run and deploy your AI Studio app
+---
 
-This contains everything you need to run your app locally.
+## About
 
-View your app in AI Studio: https://ai.studio/apps/e2bd1d60-98d9-475a-8e0e-262f18b9a586
+This platform powers the live scoring and match brackets for the **Robotics for Good Youth Challenge Ghana 2026** — the national qualifying tournament held on **16 May 2026** in Accra, Ghana. Student teams aged 10–18 compete with robots built to tackle this year's theme: **Disaster Response**.
+
+Top winners advance to the **Grand Finale at the AI for Good Global Summit 2026** in Geneva, Switzerland, organised by the International Telecommunication Union (ITU).
+
+---
+
+## Competition Format
+
+1. **Qualification Phase** — Each team competes across **4 rounds**. Points are accumulated across all rounds.
+2. **Top 8 Advance** — The eight teams with the highest total points progress to the elimination stage.
+3. **Elimination Phase** — Single-elimination matches; the winner of each match advances.
+4. **Semifinals (Round of 4)** — Winners advance to the Final; losers are matched up for a 3rd place playoff.
+5. **Grand Final** — The last two standing compete for the national championship and a spot in Geneva.
+
+---
 
 ## Run Locally
 
 **Prerequisites:** Node.js
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   npm install
+   ```
 
-<!-- Competition Running -->
+2. Run the app:
+   ```bash
+   npm run dev
+   ```
 
-1. Competiton starts and runs in 4 phases. Each team gets to run times.
-2. After these runs, the top eight proceed to the elimination phase. Qualification to the elimination stage is based on the teams with the highest number of points across all four rounds.
-3. Each elimination match runs once and the winner proceeds.
-4. After the Round of 4(Semis), winners advance to final and losers are matched up for a quaterfinal
+3. Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
+
+## Live Site
+
+[aiforgood-rho.vercel.app](https://aiforgood-rho.vercel.app)
+
+---
+
+<div align="center">
+  <p>Built for <a href="https://makersplacegh.com/competitions/robotics-for-good-youth-challenge/">The MakersPlace Ghana</a> · Powered by <a href="https://aiforgood.itu.int">ITU AI for Good</a></p>
+</div>
