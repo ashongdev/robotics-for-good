@@ -174,9 +174,9 @@ export function QualifiersTable({ data }: QualifiersTableProps) {
 						</span>
 					))}
 				</span>
-				{/* <span className="shrink-0 w-12 text-right text-[10px] font-black uppercase tracking-widest text-white/60">
-					Total
-				</span> */}
+				<span className="shrink-0 w-12 text-right text-[10px] font-black uppercase tracking-widest text-white/60">
+					Best Score
+				</span>
 			</div>
 
 			{/* ── Ranked list ── */}
@@ -264,7 +264,7 @@ export function QualifiersTable({ data }: QualifiersTableProps) {
 								</span>
 
 								{/* Total */}
-								{/* <span
+								<span
 									className={`shrink-0 w-12 text-right text-sm font-black ${
 										isExpanded
 											? "text-editorial-gold"
@@ -273,8 +273,8 @@ export function QualifiersTable({ data }: QualifiersTableProps) {
 												: "text-gray-400"
 									}`}
 								>
-									<AnimatedScore value={qualifier.total} />
-								</span> */}
+									<AnimatedScore value={qualifier.r4} />
+								</span>
 							</button>
 
 							{/* Inline expanded detail — animated */}
